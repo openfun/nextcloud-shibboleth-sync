@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:10.3
+    env_file: env.d/db
+    ports:
+      - "5452:5432"
+
+  sync:
+    build: .
+    env_file: env.d/sync
+    volumes:
+      - ./app:/app
+      - ./service_provider:/private/service_provider
+    depends_on: 
+      - db
+
+  nextcloud:
+    build:
+      context: .
+      dockerfile: ./docker/images/nextcloud/Dockerfile
+      args:
+        - NEXTCLOUD_VERSION=${NEXTCLOUD_VERSION:-18.0.3-fpm}
+    image: nextcloud:dev
+    command: >
+      php -S 0.0.0.0:9000
+    working_dir: /app
+    env_file: env.d/nextcloud
+    ports:
+      - "9000:9000"
+    volumes: 
+      - ./docker/nextcloud/config:/app/config/
+    depends_on: 
+      - db
+      - redis
+
+  # Service used only to install nextcloud
+  # If a volume containing config.php file is present the install fails.
+  # To avoid this we created a dedicated service without volume
+  nextcloud-install:
+    build:
+      context: .
+      dockerfile: ./docker/images/nextcloud/Dockerfile
+      args:
+        - NEXTCLOUD_VERSION=${NEXTCLOUD_VERSION:-18.0.3-fpm}
+    image: nextcloud:dev
+    working_dir: /app
+    env_file: env.d/nextcloud
+    depends_on: 
+      - db
+      - redis
+
+  redis:
+    image: redis:4
+
+  dockerize:
+    image: jwilder/dockerize
+
