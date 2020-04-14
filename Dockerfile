@@ -9,6 +9,10 @@ RUN docker-php-ext-install -j$(nproc) pdo_pgsql
 
 COPY app /app
 
+# /private directory will contains x509 certificate and the private key
+# provided by the service provider
+VOLUME [ "/private" ]
+
 WORKDIR /app
 
 CMD ["php", "sync-identity-providers.php"]
