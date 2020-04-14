@@ -1,0 +1,1 @@
+# nextcloud-shibboleth-sync
