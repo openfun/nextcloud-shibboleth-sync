@@ -48,7 +48,7 @@ $syncCommand = new SyncCommand(
   getenv('SAML_DISPLAYNAME_MAPPING'),
   getenv('SAML_EMAIL_MAPPING'),
   getenv('SAML_GROUP_MAPPING'),
-  getenv('SAM_GENERAL_UID_MAPPING'),
+  getenv('SAML_GENERAL_UID_MAPPING'),
   $x509cert,
   $privateKey
 );
