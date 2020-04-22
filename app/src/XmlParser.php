@@ -33,7 +33,7 @@ class XmlParser
 
     foreach ($ssos as $sso) {
       $attributes = $sso->attributes();
-      if((string) $attributes->Binding === 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST') {
+      if((string) $attributes->Binding === 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect') {
         return $attributes->Location;
       }
     }
@@ -48,7 +48,7 @@ class XmlParser
     
     foreach ($ssos as $sso) {
       $attributes = $sso->attributes();
-      if((string) $attributes->Binding === 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST') {
+      if((string) $attributes->Binding === 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect') {
         return $attributes->Location;
       }
     }
